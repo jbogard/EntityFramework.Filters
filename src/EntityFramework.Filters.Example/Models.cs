@@ -5,7 +5,7 @@
 
     public interface ITenantEntity
     {
-        long TenantId { get; set; }
+        int TenantId { get; set; }
         Tenant Tenant { get; set; }
     }
 
@@ -23,7 +23,7 @@
         }
 
         public int CategoryId { get; set; }
-        public long TenantId { get; set; }
+        public int TenantId { get; set; }
         public Tenant Tenant { get; set; }
         public string Name { get; set; }
         public virtual ICollection<BlogEntryCategory> Blogs { get; set; }
@@ -44,7 +44,7 @@
         public Author Author { get; set; }
         public int AuthorId { get; set; }
 
-        public long TenantId { get; set; }
+        public int TenantId { get; set; }
         public Tenant Tenant { get; set; }
 
         public virtual void AddCategory(Category category)
@@ -65,14 +65,14 @@
         public Category Category { get; set; }
         public int CategoryId { get; set; }
 
-        public long TenantId { get; set; }
+        public int TenantId { get; set; }
         public Tenant Tenant { get; set; }
     }
 
     public class Comment : ITenantEntity
     {
         public int CommentId { get; set; }
-        public long TenantId { get; set; }
+        public int TenantId { get; set; }
         public BlogEntry BlogEntry { get; set; }
         public int BlogEntryId { get; set; }
         public Tenant Tenant { get; set; }
@@ -84,7 +84,7 @@
         public int AuthorId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public long TenantId { get; set; }
+        public int TenantId { get; set; }
         public Tenant Tenant { get; set; }
     }
 }

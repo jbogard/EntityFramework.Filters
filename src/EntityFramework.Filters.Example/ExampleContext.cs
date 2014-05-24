@@ -125,10 +125,9 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<BlogEntry>()
-            //    //.HasMany(m => m.Comments).WithRequired(m => m.BlogEntry).WillCascadeOnDelete(false)
-            //    ;
-
+            modelBuilder.Entity<BlogEntry>()
+                .Filter("BadCategory", fc => fc.Condition(be => be.Categories.Select(c => c.Category.Name).Contains("Bad posts")))
+                .HasMany(m => m.Categories).WithRequired(m => m.BlogEntry).WillCascadeOnDelete(true);
             modelBuilder.Entity<BlogEntry>()
                 .HasRequired(m => m.Tenant).WithMany().WillCascadeOnDelete(false);
             modelBuilder.Entity<Comment>()

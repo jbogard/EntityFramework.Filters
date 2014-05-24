@@ -14,11 +14,13 @@ namespace EntityFramework.Filters
     public class FilterQueryVisitor : DefaultExpressionVisitor
     {
         private readonly DbContext _contextForInterception;
+        private readonly DbQueryCommandTree _queryCommand;
         private readonly ObjectContext _objectContext;
 
-        public FilterQueryVisitor(DbContext contextForInterception)
+        public FilterQueryVisitor(DbContext contextForInterception, DbQueryCommandTree queryCommand)
         {
             _contextForInterception = contextForInterception;
+            _queryCommand = queryCommand;
             _objectContext = ((IObjectContextAdapter)contextForInterception).ObjectContext;
         }
 
