@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Filters.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFramework.Filters.Example", "EntityFramework.Filters.Example\EntityFramework.Filters.Example.csproj", "{BB03BC81-D70F-4C94-9183-84C4E2D8F26A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{3C7083B1-6E47-4259-B4AB-0739561486FA}"
+	ProjectSection(SolutionItems) = preProject
+		EntityFramework.Filters\EntityFramework.Filters.nuspec = EntityFramework.Filters\EntityFramework.Filters.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

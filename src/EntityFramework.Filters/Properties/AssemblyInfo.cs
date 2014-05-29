@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("EntityFramework.Filters")]
 [assembly: AssemblyDescription("Create and configures filters applied to queries across a DbContext")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Jimmy Bogard")]
 [assembly: AssemblyProduct("EntityFramework.Filters")]
 [assembly: AssemblyCopyright("Copyright © 2014 Jimmy Bogard")]
 [assembly: AssemblyTrademark("")]
