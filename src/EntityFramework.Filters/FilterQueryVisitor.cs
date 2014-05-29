@@ -14,13 +14,11 @@ namespace EntityFramework.Filters
     public class FilterQueryVisitor : DefaultExpressionVisitor
     {
         private readonly DbContext _contextForInterception;
-        private readonly DbQueryCommandTree _queryCommand;
         private readonly ObjectContext _objectContext;
 
-        public FilterQueryVisitor(DbContext contextForInterception, DbQueryCommandTree queryCommand)
+        public FilterQueryVisitor(DbContext contextForInterception)
         {
             _contextForInterception = contextForInterception;
-            _queryCommand = queryCommand;
             _objectContext = ((IObjectContextAdapter)contextForInterception).ObjectContext;
         }
 
@@ -42,7 +40,10 @@ namespace EntityFramework.Filters
 
                 Filter filterConfig;
 
-                if (!FilterExtensions.FilterConfigurations.TryGetValue(_contextForInterception.GetInternalContext(), out filterConfig))
+                string filterName =
+                    globalFilter.Name.Split(new[] {"customannotation:globalFilter_"}, StringSplitOptions.None)[1];
+
+                if (!FilterExtensions.FilterConfigurations.TryGetValue(new Tuple<string, object>(filterName,  _contextForInterception.GetInternalContext()), out filterConfig))
                     continue;
 
                 if (!filterConfig.IsEnabled)

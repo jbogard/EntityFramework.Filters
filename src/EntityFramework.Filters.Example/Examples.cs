@@ -9,8 +9,8 @@
     {
         public Examples()
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<ExampleContext>());
-            SeedDb();
+            //Database.SetInitializer(new DropCreateDatabaseAlways<ExampleContext>());
+            //SeedDb();
             //Database.SetInitializer(new CreateDatabaseIfNotExists<ExampleContext>());
         }
 
@@ -33,10 +33,9 @@
         {
             using (var context = new ExampleContext())
             {
-                //context.EnableFilter("BadCategory");
+                context.EnableFilter("BadCategory");
 
                 var blogEntries = context.BlogEntries
-                    .Where(be => be.Categories.Select(c => c.Category.Name).Contains("Bad posts"))
                     .ToList();
 
                 Assert.Equal(1, blogEntries.Count);

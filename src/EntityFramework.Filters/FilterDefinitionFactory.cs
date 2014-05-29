@@ -39,9 +39,8 @@
 
             protected override Expression VisitLambda<T>(Expression<T> node)
             {
-                return base.VisitLambda(node);
-                //var body = Visit(node.Body);
-                //return Expression.Lambda<Func<TEntity, bool>>(body, node.Parameters[0]);
+                var body = Visit(node.Body);
+                return Expression.Lambda<Func<TEntity, bool>>(body, node.Parameters[0]);
             }
         }
     }

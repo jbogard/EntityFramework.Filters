@@ -8,14 +8,14 @@ namespace EntityFramework.Filters
 
     public static class FilterExtensions
     {
-        private static ConcurrentDictionary<object, Filter> _filterConfigurations;
+        private static ConcurrentDictionary<Tuple<string, object>, Filter> _filterConfigurations;
 
-        internal static ConcurrentDictionary<object, Filter> FilterConfigurations
+        internal static ConcurrentDictionary<Tuple<string, object>, Filter> FilterConfigurations
         {
             get
             {
                 if (_filterConfigurations == null)
-                    _filterConfigurations = new ConcurrentDictionary<object, Filter>();
+                    _filterConfigurations = new ConcurrentDictionary<Tuple<string, object>, Filter>();
 
                 return _filterConfigurations;
             }
@@ -33,12 +33,13 @@ namespace EntityFramework.Filters
         public static IFilter EnableFilter(this DbContext context, string filterName)
         {
             var internalContext = context.GetInternalContext();
-            var config = FilterConfigurations.GetOrAdd(internalContext, fn => new Filter(filterName));
+            var key = new Tuple<string, object>(filterName, internalContext);
+            var config = FilterConfigurations.GetOrAdd(key, fn => new Filter(filterName));
             config.IsEnabled = true;
 
             var eventInfo = internalContext.GetType().GetEvent("OnDisposing", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-            eventInfo.AddEventHandler(internalContext, new EventHandler<EventArgs>((o, e) => FilterConfigurations.TryRemove(o, out config)));
+            eventInfo.AddEventHandler(internalContext, new EventHandler<EventArgs>((o, e) => FilterConfigurations.TryRemove(key, out config)));
 
             return config;
         }
@@ -46,12 +47,13 @@ namespace EntityFramework.Filters
         public static void DisableFilter(this DbContext context, string filterName)
         {
             var internalContext = context.GetInternalContext();
-            var config = FilterConfigurations.GetOrAdd(internalContext, fn => new Filter(filterName));
+            var key = new Tuple<string, object>(filterName, internalContext);
+            var config = FilterConfigurations.GetOrAdd(key, fn => new Filter(filterName));
             config.IsEnabled = false;
 
             var eventInfo = internalContext.GetType().GetEvent("OnDisposing", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
-            eventInfo.AddEventHandler(internalContext, new EventHandler<EventArgs>((o, e) => FilterConfigurations.TryRemove(o, out config)));
+            eventInfo.AddEventHandler(internalContext, new EventHandler<EventArgs>((o, e) => FilterConfigurations.TryRemove(key, out config)));
         }
 
         internal static object GetInternalContext(this DbContext context)
