@@ -1,7 +1,7 @@
 EntityFramework.Filters
 =======================
 
-Filters implementation for Entity Framework
+Filters implementation for Entity Framework, on NuGet as the [EntityFramework.Filters](https://www.nuget.org/packages/EntityFramework.Filters/) package.
 
 Filters allow you to define a parameterized filter at configuration time. At runtime, you turn on the filter and apply parameters, and every query for that entity will include the filter.
 
