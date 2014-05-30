@@ -5,6 +5,25 @@ Filters implementation for Entity Framework, on NuGet as the [EntityFramework.Fi
 
 Filters allow you to define a parameterized filter at configuration time. At runtime, you turn on the filter and apply parameters, and every query for that entity will include the filter.
 
+Configuration
+-----------------------
+The FilterInterceptor must be registered with Entity Framework, either through a DbConfiguration class:
+```chsarp
+public class ExampleConfiguration : DbConfiguration
+{
+    public ExampleConfiguration()
+    {
+        AddInterceptor(new FilterInterceptor());
+    }
+}
+```
+Or through the OnModelCreating method:
+```csharp
+protected override void OnModelCreating(DbModelBuilder modelBuilder)
+{
+    DbInterception.Add(new FilterInterceptor());
+}
+```
 
 Examples
 -----------------------
