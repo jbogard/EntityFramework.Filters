@@ -9,7 +9,7 @@ namespace EntityFramework.Filters
     {
         public void TreeCreated(DbCommandTreeInterceptionContext interceptionContext)
         {
-            if (interceptionContext.OriginalResult.DataSpace == DataSpace.SSpace)
+            if (interceptionContext.OriginalResult.DataSpace == DataSpace.CSpace)
             {
                 var queryCommand = interceptionContext.Result as DbQueryCommandTree;
                 if (queryCommand != null)
