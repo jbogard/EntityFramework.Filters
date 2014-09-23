@@ -115,6 +115,10 @@
 
     public class ExampleContext : DbContext
     {
+        public ExampleContext() :base("name=EntityFramework.Filters.Example.ExampleContext")
+        {
+        }
+
         public DbSet<BlogEntry> BlogEntries { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
