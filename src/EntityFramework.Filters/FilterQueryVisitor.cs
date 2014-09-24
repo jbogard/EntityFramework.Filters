@@ -28,9 +28,13 @@ namespace EntityFramework.Filters
             var item = expression.Target.ElementType.MetadataProperties.First(p => p.Name == "Configuration");
 
             // using reflection to get the Annotations property as EntityTtypeConfiguration is an internal class in EF
+            Dictionary<string, object> annotations = new Dictionary<string, object>();
             var value = item.Value;
             var propertyInfo = value.GetType().GetProperty("Annotations");
-            var annotations = (Dictionary<string, object>)propertyInfo.GetValue(value, null);
+            if (propertyInfo != null)
+            {
+                annotations = (Dictionary<string, object>) propertyInfo.GetValue(value, null);
+            }
 
             if (!annotations.Any())
             {
