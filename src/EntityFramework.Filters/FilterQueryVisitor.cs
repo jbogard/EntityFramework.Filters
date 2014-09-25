@@ -24,26 +24,33 @@ namespace EntityFramework.Filters
 
         public override DbExpression Visit(DbScanExpression expression)
         {
-            var globalFilters =
-                expression.Target.ElementType.MetadataProperties.Where(
-                    mp => mp.Name.Contains("customannotation:globalFilter_")).ToList();
+            // a bit harder to get the metadata in CSpace
+            var item = expression.Target.ElementType.MetadataProperties.First(p => p.Name == "Configuration");
 
-            if (!globalFilters.Any())
+            // using reflection to get the Annotations property as EntityTtypeConfiguration is an internal class in EF
+            Dictionary<string, object> annotations = new Dictionary<string, object>();
+            var value = item.Value;
+            var propertyInfo = value.GetType().GetProperty("Annotations");
+            if (propertyInfo != null)
+            {
+                annotations = (Dictionary<string, object>) propertyInfo.GetValue(value, null);
+            }
+
+            if (!annotations.Any())
             {
                 return base.Visit(expression);
             }
 
             DbExpression current = expression;
-            foreach (var globalFilter in globalFilters)
+            foreach (var globalFilter in annotations.Where(a => a.Key.StartsWith("globalFilter")))
             {
                 var convention = (FilterDefinition)globalFilter.Value;
 
                 Filter filterConfig;
 
-                string filterName =
-                    globalFilter.Name.Split(new[] {"customannotation:globalFilter_"}, StringSplitOptions.None)[1];
+                string filterName = globalFilter.Key.Split(new[] { "globalFilter_" }, StringSplitOptions.None)[1];
 
-                if (!FilterExtensions.FilterConfigurations.TryGetValue(new Tuple<string, object>(filterName,  _contextForInterception.GetInternalContext()), out filterConfig))
+                if (!FilterExtensions.FilterConfigurations.TryGetValue(new Tuple<string, object>(filterName, _contextForInterception.GetInternalContext()), out filterConfig))
                     continue;
 
                 if (!filterConfig.IsEnabled)

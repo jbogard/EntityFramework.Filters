@@ -49,9 +49,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExampleContextWithMapping.cs" />
+    <Compile Include="ExamplesWithMapping.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="ExampleContext.cs" />
     <Compile Include="Examples.cs" />
+    <Compile Include="ModelWithMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
