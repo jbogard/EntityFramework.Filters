@@ -28,6 +28,30 @@
             }
         }
 
+        [Fact]
+        public void Should_not_cache_filter_values()
+        {
+            using (var context = new ExampleContext())
+            {
+                var tenant = context.Tenants.Find(1);
+                context.CurrentTenant = tenant;
+                context.EnableFilter("Tenant")
+                    .SetParameter("tenantId", tenant.TenantId);
+
+                Assert.Equal(1, context.BlogEntries.Count());
+            }
+
+            using (var context = new ExampleContext())
+            {
+                var tenant = context.Tenants.Find(2);
+                context.CurrentTenant = tenant;
+                context.EnableFilter("Tenant")
+                    .SetParameter("tenantId", tenant.TenantId);
+
+                Assert.Equal(2, context.BlogEntries.ToList().First().TenantId);
+            }
+        }
+
         [Fact(Skip = "Expression compilation not working quite yet")]
         public void Should_filter_based_on_specific_value()
         {

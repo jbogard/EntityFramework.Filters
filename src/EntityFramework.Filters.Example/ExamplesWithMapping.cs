@@ -7,10 +7,13 @@ using Xunit;
 
 namespace EntityFramework.Filters.Example
 {
+    using System.Data.Entity;
+
     public class ExamplesWithMapping
     {
         public ExamplesWithMapping()
         {
+            Database.SetInitializer(new DropCreateDatabaseAlways<ExampleContextWithMapping>());
             // Initialize database in the Examples class 
         }
 
