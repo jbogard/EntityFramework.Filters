@@ -8,7 +8,7 @@ Filters allow you to define a parameterized filter at configuration time. At run
 Configuration
 -----------------------
 The FilterInterceptor must be registered with Entity Framework, either through a DbConfiguration class:
-```chsarp
+```csharp
 public class ExampleConfiguration : DbConfiguration
 {
     public ExampleConfiguration()
@@ -30,7 +30,7 @@ Examples
 
 Filters are first defined, then configured. You define the filter against a single entity:
 
-```
+```csharp
 modelBuilder.Entity<Listing>()
     .Filter("ActiveListings", c => c.Condition<ListingStatus>(
         listing => listing.Status == ListingStatus.Active));
@@ -38,14 +38,14 @@ modelBuilder.Entity<Listing>()
 
 Or against a set of entities that match a type (interface or base class):
         
-```
+```csharp
 modelBuilder.Conventions.Add(
     FilterConvention.Create<IAgencyEntity, int>("Agency", (e, agencyId) => e.AgencyId == agencyId);
 ```
 
 Filters are then enabled and parameter values filled in on a DbContext basis:
 
-```
+```csharp
 dbContext.EnableFilter("ActiveListings");
 dbContext.EnableFilter("Agency")
     .SetParameter("agencyId", _userContext.CurrentUser.AgencyId);
@@ -53,7 +53,7 @@ dbContext.EnableFilter("Agency")
 
 Filters are disabled by default, and you can disable them selectively after enabling:
 
-```
+```csharp
 dbContext.DisableFilter("ActiveListings");
 ```
 
