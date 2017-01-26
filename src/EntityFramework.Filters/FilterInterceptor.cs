@@ -9,21 +9,20 @@ namespace EntityFramework.Filters
     {
         public void TreeCreated(DbCommandTreeInterceptionContext interceptionContext)
         {
-            if (interceptionContext.OriginalResult.DataSpace == DataSpace.CSpace)
-            {
-                var queryCommand = interceptionContext.Result as DbQueryCommandTree;
-                if (queryCommand != null)
-                {
-                    var context = interceptionContext.DbContexts.FirstOrDefault();
-                    if (context != null)
-                    {
-                        var newQuery =
-                            queryCommand.Query.Accept(new FilterQueryVisitor(context));
-                        interceptionContext.Result = new DbQueryCommandTree(
-                            queryCommand.MetadataWorkspace, queryCommand.DataSpace, newQuery);
-                    }
-                }
-            }
+            if (interceptionContext.OriginalResult.DataSpace != DataSpace.CSpace) return;
+
+            var queryCommand = interceptionContext.Result as DbQueryCommandTree;
+            if (queryCommand == null) return;
+
+            var context = interceptionContext.DbContexts.FirstOrDefault();
+            if (context == null) return;
+
+            interceptionContext.Result = new DbQueryCommandTree(
+                queryCommand.MetadataWorkspace,
+                queryCommand.DataSpace,
+                queryCommand.Query.Accept(new FilterQueryVisitor(context)),
+                validate: true,
+                useDatabaseNullSemantics: queryCommand.UseDatabaseNullSemantics);
         }
     }
 }
